@@ -15,8 +15,8 @@ from ase.units import Ha, Bohr, Debye, fs
 
 seed = 93217
 
-xyz = "enol.xyz"
-chk_file = "hbq_44_ts.chk"
+xyz = "enol.xyz"                #starting geometry
+chk_file = "hbq_44.chk"         # initial checkpoint file
 
 nactorbs = 4
 nelect = 4
@@ -50,8 +50,8 @@ class pyscf_lpdft(Calculator):
         hf = self.mol.RHF().density_fit()   #Density fiting used here
         hf.run()
 
-        mc = mcpdft.CASSCF(hf, "tPBE", nactorbs, nelect, grids_level=4)
-        mc.fcisolver = csf_solver(self.mol, smult=1)
+        mc = mcpdft.CASSCF(hf, "tPBE", nactorbs, nelect, grids_level=4)  
+        mc.fcisolver = csf_solver(self.mol, smult=1)        #spin
         mc = mc.multi_state([1.0/nstates,]*nstates, 'lin')
         mc.max_cycle = 2000
         mc.conv_tol = 1e-7
